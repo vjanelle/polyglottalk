@@ -9,7 +9,7 @@ Puppet for beginners
 
 Puppet represents resource configurations through a __Domain Specific Language__ which "is a type of programming language or specification language in software development and domain engineering dedicated to a particular problem domain, a particular problem representation technique, and/or a particular solution technique." -- Wikipedia 
 
-Essentially this means that puppet has a fairly unique but similiar syntax to other languages to abstract the low level interactions of Ruby away from you.  You still need to be aware that it's there, and you may elect to write functional pieces in Ruby in the future, but for now you won't need to know that it's there.
+Essentially this means that puppet has a fairly unique but similar syntax to other languages to abstract the low level interactions of Ruby away from you.  You still need to be aware that it's there, and you may elect to write functional pieces in Ruby in the future, but for now you won't need to know that it's there.
 
 ### Resources
 
@@ -38,7 +38,7 @@ It's worth noting that there is type of variable, called a _namevar_.  This norm
 
 #### Attributes
 
-A attribute is a parameter, and will be available in your class or defined type as the same name, preceeding with a _$_.  For example, the __home__ attribute in the example will be available as _$home_ in the DSL.
+A attribute is a parameter, and will be available in your class or defined type as the same name, preceding with a _$_.  For example, the __home__ attribute in the example will be available as _$home_ in the DSL.
 
 ### Working example
 
