@@ -111,6 +111,7 @@ $onesies = 'alpha'
 $twosies = 'beta'
 
 $allsies = [ $onesies, $twosies ] 
-// The above code contains an array with the content [ 'alpha', 'beta' ]
+
 </pre>
 
+> The above code contains an array with the content [ 'alpha', 'beta' ]
