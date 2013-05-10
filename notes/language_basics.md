@@ -111,7 +111,47 @@ $onesies = 'alpha'
 $twosies = 'beta'
 
 $allsies = [ $onesies, $twosies ] 
-
 </pre>
 
 > The above code contains an array with the content [ 'alpha', 'beta' ]
+
+#### Interpolation
+
+Like many other dynamic languages, Puppet can resolve variables in double quoted strings:
+<pre>
+$world = 'Earth'
+
+notice("Hello planet ${world}")
+</pre>
+> This will output `notice: Hello planet Earth` in the puppet notice level logging output when executed
+
+This can be used as a poor version of string concatenation - a feature puppet is currently missing.  You may need this in the future to combine variables together.
+
+### Variable Scope
+
+> Link to image from http://docs.puppetlabs.com/puppet/latest/reference/lang_scope.html
+
+A __scope__ is a specific __area of code__, isolated from other areas of your manifest.  Their purpose is to limit the reach variables and other types of default attribute data you can assign to resource types.  
+
+> This is a topic that easily confuses people, so don't be worried if you don't get it right away - if you're getting tripped up on it, try to simplify the readability of your code by using attributes for lookups instead of referencing variables outside of your scope.
+
+They _do not affect_ resource titles, which are global, and references to those resources (see dependancy chaining).
+
+To retrieve the value of a variable outside of your scope, use the `::` seperator:
+
+<pre>
+$topvar = 'foo' # available everywhere as $::topvar
+
+class example {
+   $var = 'one' # available locally as $var, and as $example::var
+}
+class secondexample {
+   notice($example::var) # from the 'example' class variable, named 'var'
+   notice($::topvar) # from the global scope
+}
+node default {
+   $nodevar = 'two' # Local to the node scope, not any deeper or higher.  
+                    # You can only pass this variable as an attribute assignment.
+}
+</pre>
+
