@@ -76,7 +76,8 @@ user { 'root':
 }
 </pre>
 
-> The above output contains puppet DSL output - certain values are quotes that don't necessarily need to be.  Things to note are the groups attribute - you can pass an array as an argument.  We'll be going into this more later.
+> The above command output contains valid puppet DSL output - You can save this to a file and execute it with `puppet apply` later.  
+> One thing to note are the groups attribute - you can pass an array as an argument.  We'll be going into this more later.
 
 To create a user:
 
@@ -93,3 +94,23 @@ user { 'vjanelle':
 </pre>
 
 > The 'notice: /User[vjanelle]/ensure: created' line is emitted by puppet as a log entry - it is not valid puppet syntax.  This is for informational purposes only that puppet created the user and it is now present on your system.
+
+## Language elements
+
+### Variables
+
+Variables in puppet are much like most languages - preceeded by a dollar sign ($var), and assigned with the equal sign ($var = "bar").  Any __normal__ data type (ie, anything that isn't a regex value) can be assigned to a variable.  
+
+Without getting into this too much, variables can only be assigned by their "short name" - ie, in their current scope.  What this means is that you cannot assign variables outside of the scope of the class, type, or node, or global scope where the variable is being assigned.
+
+#### Resolution
+
+Variables can also by assigned in place where you'd normally enter normal data:
+<pre>
+$onesies = 'alpha'
+$twosies = 'beta'
+
+$allsies = [ $onesies, $twosies ] 
+// The above code contains an array with the content [ 'alpha', 'beta' ]
+</pre>
+
