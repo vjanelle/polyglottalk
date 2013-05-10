@@ -162,7 +162,9 @@ Puppet will search the scope trees if you do not specify the explicit scope - th
 
 ### Conditional statements
 
-A number of words in puppet are __reserved__ - meaning you can't:
+Conditional statements are like in most other languages, and allow your code to behave differently various situations by means of tests.  When combined with __facts__ or data retrieved from an external source, they are instrumental in making reusable components that you can extend and use in multiple places and environments.  These typically work off of boolean logic, and are very similiar to constructs in other languages.
+
+As a side note, a number of words in puppet are __reserved__ - meaning you can't:
 
 * Use them as bare words - variable contents without quotes
 * Use them as names for custom ruby functions
@@ -184,6 +186,69 @@ Most of the reserved words are used for conditional statements:
 9. undef
 
 > `undef` is a 'special' value - it's only a reserved word by aggreement, and commonly used as a default variable that one tests for as a variable that needs to be forcibly assigned in a class or type.
+
+Most conditionals contain: 
+1. a keyword
+2. a conditional test, typically a `boolean` (true, false)
+3. a pair of curly braces ({ and }) which contain puppet code to be executed
+
+
+#### `if` statements
+
+This tests for a boolean true conditional, and executes the code block if the test evaluates to `true`.
+<pre>
+if $::fqdn == 'localhost' {
+  notice("My host is ${::fqdn}") # Outputs "My host is localhost"
+}
+</pre>
+
+> $::fqdn is a top level variable that contains `fact` - a variable provided by the agent that is gathered from the system.
+
+#### `unless` statements
+
+The `unless` statement is basically the reverse of an if statement, and will only execute code if the test is `false`.  `unless` statement do not have any branching - they cannot be followed up with an `elsif` or `else` block.
+
+<pre>
+unless $::memorysize > 1024 {
+  $maxclient = 500
+}
+</pre>
+
+> In this example we're testing to see if the machine the agent is running on has more than 1024 MB of ram - a `fact` that calculates the memory size into a human usable number.  If the machine has less than 1GB, it'll set an arbritrary variable to 500.
+
+#### `case` statement
+
+Like `if` statements, `case` statements use a list of cases and code blocks and will execute the first block that matches the control expression as a boolean `true`.
+
+<pre>
+case $::operatingsystem {
+  'Solaris':           { notice("We are running solaris") }
+  'RedHat', 'CentOS':  { notice("We are running redhat, or centos") }
+  /^(Debian|Ubuntu)$/: { notice("Through the power of regex, we are running ${::operatingsystem}") }
+  default:             { exit("Unknown ${::operatingsystem") }
+}
+</pre>
+
+> The `default` statement is a catch-all bare word - code that is executed if none of the other tests match.  As you can see in the previous example, you are not limited to normal data types in this test(strings, numbers), and you can apply ruby regular expressions as well (or even execute functions).
+
+#### Selectors
+
+Selector statements are similiar to `case` statements, but instead of executing a block of puppet code, they return a variable:
+
+<pre>
+$rootgroup = $::osfamily ? {
+  'Solaris'          => 'wheel',
+  /(Darwin|FreeBSD)/ => 'wheel',
+  default            => 'root',
+}
+</pre>
+
+> Various operating systems have the concept of a __group__ that allows for various super-user level privileges, or acts as a control gate for elevating privileges, or may not have a super-user group specific to the administrative user at all - Solaris, MacOS and FreeBSD being examples of this.
+>  This code is determining based off a `fact` that provides a higher level overview of common operating system family traits and is available to you as a top level string.
+
+
+
+
 
 
 
