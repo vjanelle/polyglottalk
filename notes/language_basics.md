@@ -119,11 +119,12 @@ $allsies = [ $onesies, $twosies ]
 
 Like many other dynamic languages, Puppet can resolve variables in double quoted strings:
 <pre>
+$species = 'human'
 $world = 'Earth'
 
-notice("Hello planet ${world}")
+notice("Hello ${species}, from planet ${world}")
 </pre>
-> This will output `notice: Hello planet Earth` in the puppet notice level logging output when executed
+> This will output `notice: Hello human, from planet Earth` in the puppet notice level logging output when executed
 
 This can be used as a poor version of string concatenation - a feature puppet is currently missing.  You may need this in the future to combine variables together.
 
