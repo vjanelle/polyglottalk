@@ -156,3 +156,36 @@ node default {
 }
 </pre>
 
+Puppet will search the scope trees if you do not specify the explicit scope - this will matter more when we get into `facts` - information which is provided by the agent and is accessible for you in the `top scope`. 
+
+> This behaviour has changed between puppet 2.6 and 3.x - this is important information to research if you're updating older puppet infrastructure, or considering using Puppet Enterprise!  Make sure you consult http://docs.puppetlabs.com/guides/scope_and_puppet.html for more information.  We'll be focusing on the puppet 3.x for this.
+
+### Conditional statements
+
+A number of words in puppet are __reserved__ - meaning you can't:
+
+* Use them as bare words - variable contents without quotes
+* Use them as names for custom ruby functions
+* Use them as names of classes, custom resource types, or defined resource types
+* In previous versions of puppet, use them as names of attributes - this changed in 3.x
+
+Most of the reserved words are used for conditional statements:
+
+1. if
+2. else
+3. and
+2. or
+3. case
+3. true
+4. false
+6. in
+7. or
+8. unless
+9. undef
+
+> `undef` is a 'special' value - it's only a reserved word by aggreement, and commonly used as a default variable that one tests for as a variable that needs to be forcibly assigned in a class or type.
+
+
+
+
+
