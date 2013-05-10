@@ -78,9 +78,6 @@ user { 'root':
 
 > The above output contains puppet DSL output - certain values are quotes that don't necessarily need to be.  Things to note are the groups attribute - you can pass an array as an argument.  We'll be going into this more later.
 
-
-
-
 To create a user:
 
 <pre>
@@ -94,3 +91,5 @@ user { 'vjanelle':
     shell => '/bin/bash'
 }
 </pre>
+
+> The 'notice: /User[vjanelle]/ensure: created' line is emitted by puppet as a log entry - it is not valid puppet syntax.  This is for informational purposes only that puppet created the user and it is now present on your system.
