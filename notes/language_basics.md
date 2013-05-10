@@ -26,7 +26,7 @@ user { 'vjanelle': <-- title
 
 The building blogs of a puppet run are a collection of **resources**.  
 
-A resource is an instance of a **resource type** and is identified by a unique title, and a number of attributes which operate as parameters, each having a value.  Puppet has a number of core types, which are distributed with the runtime.  You can extend upon this collection with modules, providers, and types.  I'll be covering these more later.  
+A resource is an instance of a **resource type** and is identified by a unique type+title(ie, a "user" titled "vjanelle"), and a number of attributes which operate as parameters, each having a value.  Puppet has a number of core types, which are distributed with the runtime.  You can extend upon this collection with modules, providers, and types.  I'll be covering these more later.  
 
 This example demonstrates a large portion of the syntax in the language, and you'll be seeing this a lot.  Hopefully the above example lays this out in a straightforward way.  It's also worth noting that this alone is enough for the puppet user core type to start managing the user "vjanelle" - but we'll be continuing into manifests after this.
 
@@ -59,7 +59,7 @@ Open a terminal window and execute the above command.  Puppet will enumerate a l
 This is known as the resource shell, and lets you query and modify your system from the command line, provided that the resource type supports this.  
 
 
-Example of querying a specific user
+Example of querying a specific user:
 
 <pre>
 puppet resource user root
@@ -75,6 +75,11 @@ user { 'root':
   uid      => '0',
 }
 </pre>
+
+> The above output contains puppet DSL output - certain values are quotes that don't necessarily need to be.  Things to note are the groups attribute - you can pass an array as an argument.  We'll be going into this more later.
+
+
+
 
 To create a user:
 
