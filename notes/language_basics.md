@@ -297,4 +297,18 @@ These are not normal variables, and have unique behaviours:   Their variable sco
 
 > [Rubular regex](http://rubular.com/) is an awesome resource for testing ruby regexes if you're not familiar with their syntax.
 
+## Functions
 
+Functions are pre-defined pieces of Ruby code which is run during **compilation**.  Most functions return values, or modify the catalog.  For the most part, you will be interacting with functions that **return values**.
+
+A common function that you'll you'll commonly is `template()`.  This function takes (a, multiple)string as an argument which acts as a name on disk of a template in a module - we'll get more into this later:
+
+<pre>
+$content = template('polyglot/test.erb') # contains <%= "hello world" %>
+notice($content$)
+
+Notice: Scope(Class[main]): hello world
+Notice: Finished catalog run in 0.27 seconds
+</pre>
+
+Functions are executed during the compilation stage, which means they are only able to access commands and data available on the **master**.  Any information this will need to make decisions about execution will either need to be present as a `fact`, or contained within a `resource` (which will execute on the node).  These are more advanced topics and will not be gone into with very much detail.
