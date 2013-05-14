@@ -200,7 +200,15 @@ This tests for a boolean true conditional, and executes the code block if the te
 if $::fqdn == 'localhost' {
   notice("My host is ${::fqdn}") # Outputs "My host is localhost"
 }
+elsif $::fqdn == 'database' {
+  notice("My host is the database server")
+}
+else {
+  notice("We're somewhere strange")
+}
 </pre>
+
+Along with `if`, there is `elsif` (acts an else/if test), and a pure `else` operator.
 
 > $::fqdn is a top level variable that contains `fact` - a variable provided by the agent that is gathered from the system.
 
@@ -246,11 +254,47 @@ $rootgroup = $::osfamily ? {
 > Various operating systems have the concept of a __group__ that allows for various super-user level privileges, or acts as a control gate for elevating privileges, or may not have a super-user group specific to the administrative user at all - Solaris, MacOS and FreeBSD being examples of this.
 >  This code is determining based off a `fact` that provides a higher level overview of common operating system family traits and is available to you as a top level string.
 
+These are useful for determining variable content based off of another content, and avoiding chained if/elsif statements which could get rapidly tedious.  For readability's sake, you should only do this when assigning variables, ie:
 
+<pre>
+$grp = $::osfamily ? {
+  default => 'root',
+}
+user { 'vjanelle':
+	group => $grp,
+}
+</pre>
 
+You should really, **really** avoid doing something like this:
+<pre>
+user { 'vjanelle':
+  group => $::osfamily ? { 
+     'SomeOS' => 'foo',
+     default => 'root',
+  },
+}
+</pre>
 
+Inlining the selectors in your resource is possible, but can rapidly produce unreadable code.  Many auto-formatting tools also can't handle this.
 
+It can also lead to duplication of code, especially when you're creating many similiar resources.  
 
+#### Regular expressions
 
+`if`, `case`, and selectors all support regex as expression options in various fashions.  These can be extended even further to capture sections of the variable you're testing against, and are available inside your block:
+
+<pre>
+$tz = $timezone ? {
+  /(PST|PDT)/ => "America/Vancouver is currently $1",
+  default => "Somewhere else"
+}
+if $::hostname =~ /www(\d\+)\./ {
+  notice("We are on webserver # $1")
+}
+</pre>
+
+These are not normal variables, and have unique behaviours:   Their variable scope is is not persisted outside the content being tested (outside of the `if` block, etc).
+
+> [Rubular regex](http://rubular.com/) is an awesome resource for testing ruby regexes if you're not familiar with their syntax.
 
 
