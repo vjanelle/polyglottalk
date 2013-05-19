@@ -66,6 +66,8 @@ Produces:
 Notice: Scope(Class[Polyglot]): His name was Vincent Janelle
 </pre>
 
+The way this works is through a special `class` pseudo resource-type.
+
 From the puppet manual: "Why Do Resource-Like Declarations Have to Be Unique?""
  > This is necessary to avoid paradoxical or conflicting parameter values. Since overridden values from the class 
 > declaration always win, are computed at compile-time, and do not have a built-in hierarchy for resolving conflicts, 
@@ -73,6 +75,52 @@ From the puppet manual: "Why Do Resource-Like Declarations Have to Be Unique?""
 > This was the original reason for adding external data bindings to include-like declarations: since external data is set 
 > before compile-time and has a fixed hierachy, the compilercan safe safely rely on it without risk of conflicts.
 
-When puppet talks about parse-order, it is specifically talking how the puppet DSL is read off the disk.  As data is interpreted, it loads in resources.  Certain functions can be used (such as `defined()` which will make a decision based off of the current state of the catalog as it's being compiled, and can change the way the DSL is being interpreted.  Mostly this is from a top-down perspective.  This is a highly complicated topic and it isn't something you're expected to know at 
+When puppet talks about parse-order, it is specifically talking how the puppet DSL is read off the disk.  As data is interpreted, it loads in resources.  Certain functions can be used (such as `defined()` which will make a decision based off of the current state of the catalog as it's being compiled, and can change the way the DSL is being interpreted.  Mostly this is from a top-down perspective.  This is a highly complicated topic and it isn't something you're expected to know at the beginning, but it's useful for defined types and custom resources where you may need to depend on a class, but don't necessarily need it instantiated in a certain order.
+
+#### Using the `include` function
+
+The `include` function is the standard way to declare classes.  You can include multiple classes as arguments, 	and it relies on external data (ie, from data sources or default parameters) for parameters.  It can accept a single class:
+
+<pre>
+include common
+include base
+include ntp
+</pre>
+
+A comma seperated list of classes:
+
+<pre>
+include common,ntp,base
+</pre>
+
+Or an array of classes:
+<pre>
+$my_classes = ['common,'ntp','base']
+include $my_classes
+</pre>
+
+#### Using the `require` function
+
+The `require` function declares one or more classes, then enforces a child relationship on the surrounding container.
+
+> This is different from the `require` meta-parameter, which is a common parameter all defined types can accept as an argument, which provides a case-by-case dependancy.
+
+<pre>
+define ntp::server (
+ $port = 123,
+ $bind = '0.0.0.0'
+) {
+  require ntp
+  …
+}
+</pre>
+
+What this will do is ensure that every `ntp` resource gets applied **before** every `ntp::server` resource.
+
+#### Which one should I use?
+
+If you're prototyping out a system, I'd suggest using the resource type - it allows you to maintain all your changes and prototyping inside's puppet DSL, avoiding some of the complexity external data systems can produce.  However, it can lead to a lot more boilerplate; once you start producing systems that are designed to be replicated and used in multiple environments, you should start migrating your manifests to utilize external data for parameters (params pattern, hiera, etc).
+
+
 
 
