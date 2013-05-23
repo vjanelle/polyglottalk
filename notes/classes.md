@@ -27,8 +27,7 @@ Invoking this class has an optional parameter of "student", which will change th
 
 #### Location
 
-Classes can (and should) be stored in a `module`.  Puppet is automagically aware of any value class stored in a module and can auto-load them by name.  Definitions should be stored in the `manifests/` directory of a module with one definition per file and each filename should represent the name of it's class.
-
+Classes can (and should) be stored in a `module`.  Puppet is automagically aware of any class stored in a module and can auto-load them by name.  Definitions should be stored in the `manifests/` directory of a module with one definition per file and each filename should represent the name of it's class, ie `polyglot/manifests/init.pp` for the `polyglot` class, `ntp/manifests/init.pp` for the `ntp` class.  A subclass would be `polyglot/manifests/test.pp` for `polyglot::test`.
 
 ### Include-like
 
@@ -84,7 +83,7 @@ When puppet talks about parse-order, it is specifically talking how the puppet D
 
 ### Using the `include` function
 
-The `include` function is the standard way to declare classes.  You can include multiple classes as arguments, 	and it relies on external data (i.e., from data sources or default parameters) for parameters.  It can accept a single class:
+The `include` function is the standard way to declare classes.  You can include multiple classes as arguments, and it relies on external data (i.e., from data sources or default parameters) for parameters.  It can accept a single class:
 
 <pre>
 include common

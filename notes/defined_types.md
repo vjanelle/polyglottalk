@@ -49,6 +49,11 @@ The general form of a type definition is:
 * A block of arbitrary Puppet code, which generally contains at least one resource declaration
 * A closing curly brace
 
+### Location
+
+Defined types can (and should) be stored in a `module`.  Puppet is automagically aware of any defined type stored in a module and can auto-load them by name.  Definitions should be stored in the `manifests/` directory of a module with one definition per file and each filename should represent the name of it's type, ie `apache/manifests/vhost.pp`.
+
+
 ###  A word about style 
 
 Puppet's pretty flexible about what you feed it - bare words, numbers, etc.  It will accept many forms of 'code compression', ie removing redundant statements, selectors in type/class declarations etc… For now, please avoid them - try to keep your manifests using local variables as possible, and don't worry about line counts.
