@@ -25,6 +25,11 @@ Invoking this class has an optional parameter of "student", which will change th
 
 > On a side note, declaring a parameter in the class without a default will cause the compilation to **fail**.  This is useful as a circuit-breaker to make sure that parameter contents are defined, typically with the resource-like declaration in pure puppet, or with using hiera or an ENC in the master-agent setup.  You may wish to set the default to `undef`, and add an if test, with the `fail()` function to provide a more descriptive error message.
 
+#### Location
+
+Classes can (and should) be stored in a `module`.  Puppet is automagically aware of any value class stored in a module and can auto-load them by name.  Definitions should be stored in the `manifests/` directory of a module with one definition per file and each filename should represent the name of it's class.
+
+
 ### Include-like
 
 The `include`, `require`, and `hiera_include` functions let you safely declare a class **multiple** times.  No matter how many times you declare it, a class will only be added to the catalog *once*.  This can allow classes or defined types to manage their own dependancies, and lets you create overlapping 'role' classes where functionality (such as requiring a package for a specific language, database connectivity, etc) can exist in multiple roles.
