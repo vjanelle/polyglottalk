@@ -1,6 +1,6 @@
 # Classes
 
-Classes are named blocks of Puppet code, which are not applied until they are invoked by name.  These are typically medium to large size chunks of functionality that only need to run once (such as package resources, services, global file templates, etc…).  More fine grained or repeatedable pieces of information can be configured through resources.  Try to think of these as singletons that can only be invoked (with parameters, more into this later) once.
+Classes are named blocks of Puppet code, which are not applied until they are invoked by name.  These are typically medium to large size chunks of functionality that only need to run once (such as package resources, services, global file templates, etc…).  More fine grained or repeatable pieces of information can be configured through resources.  Try to think of these as singletons that can only be invoked (with parameters, more into this later) once.
 
 ## Defining a class
 
@@ -27,9 +27,9 @@ Invoking this class has an optional parameter of "student", which will change th
 
 ### Include-like
 
-The `include`, `require`, and `hiera_include` functions let you safely declare a class **multiple** times.  No matter how many times you declare it, a class will only be added to the catalog *once*.  This can allow classes or defined types to manage their own dependancies, and lets you create overlapping 'role' classes where functionality (such as requiring a package for a specific language, database connectivity, etc) can exist in mulitple roles.
+The `include`, `require`, and `hiera_include` functions let you safely declare a class **multiple** times.  No matter how many times you declare it, a class will only be added to the catalog *once*.  This can allow classes or defined types to manage their own dependancies, and lets you create overlapping 'role' classes where functionality (such as requiring a package for a specific language, database connectivity, etc) can exist in multiple roles.
 
-Include-like behaviour relies on external data and defaults for parameter data - if your class does not use defaults, or include functions in the declaration to lookup these resources (via `extlookup` or via `hiera_lookup()`), catalog compilation will fail:
+Include-like behavior relies on external data and defaults for parameter data - if your class does not use defaults, or include functions in the declaration to lookup these resources (via `extlookup` or via `hiera_lookup()`), catalog compilation will fail:
 
 <pre>
 test.pp:
@@ -73,13 +73,13 @@ From the puppet manual: "Why Do Resource-Like Declarations Have to Be Unique?""
 > declaration always win, are computed at compile-time, and do not have a built-in hierarchy for resolving conflicts, 
 > allowing repeated overrides would cause catalog compilation to be unreliable and parse-order dependent. 
 > This was the original reason for adding external data bindings to include-like declarations: since external data is set 
-> before compile-time and has a fixed hierachy, the compilercan safe safely rely on it without risk of conflicts.
+> before compile-time and has a fixed hierarchy, the compiler can safe safely rely on it without risk of conflicts.
 
 When puppet talks about parse-order, it is specifically talking how the puppet DSL is read off the disk.  As data is interpreted, it loads in resources.  Certain functions can be used (such as `defined()` which will make a decision based off of the current state of the catalog as it's being compiled, and can change the way the DSL is being interpreted.  Mostly this is from a top-down perspective.  This is a highly complicated topic and it isn't something you're expected to know at the beginning, but it's useful for defined types and custom resources where you may need to depend on a class, but don't necessarily need it instantiated in a certain order.
 
 ### Using the `include` function
 
-The `include` function is the standard way to declare classes.  You can include multiple classes as arguments, 	and it relies on external data (ie, from data sources or default parameters) for parameters.  It can accept a single class:
+The `include` function is the standard way to declare classes.  You can include multiple classes as arguments, 	and it relies on external data (i.e., from data sources or default parameters) for parameters.  It can accept a single class:
 
 <pre>
 include common
@@ -87,7 +87,7 @@ include base
 include ntp
 </pre>
 
-A comma seperated list of classes:
+A comma separated list of classes:
 
 <pre>
 include common,ntp,base
