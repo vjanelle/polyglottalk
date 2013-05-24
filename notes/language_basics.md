@@ -162,7 +162,7 @@ Puppet will search the scope trees if you do not specify the explicit scope - th
 
 ### Conditional statements
 
-Conditional statements are like in most other languages, and allow your code to behave differently various situations by means of tests.  When combined with __facts__ or data retrieved from an external source, they are instrumental in making reusable components that you can extend and use in multiple places and environments.  These typically work off of boolean logic, and are very similiar to constructs in other languages.
+Conditional statements are like in most other languages, and allow your code to behave differently various situations by means of tests.  When combined with __facts__ or data retrieved from an external source, they are instrumental in making reusable components that you can extend and use in multiple places and environments.  These typically work off of boolean logic, and are very similar to constructs in other languages.
 
 As a side note, a number of words in puppet are __reserved__ - meaning you can't:
 
@@ -175,15 +175,16 @@ Most of the reserved words are used for conditional statements:
 
 1. if
 2. else
-3. and
-2. or
-3. case
-3. true
-4. false
-6. in
-7. or
-8. unless
-9. undef
+3. elsif
+4. and
+5. or
+6. case
+7. true
+8. false
+9. in
+10. or
+11. unless
+12. undef
 
 > `undef` is a 'special' value - it's only a reserved word by aggreement, and commonly used as a default variable that one tests for as a variable that needs to be forcibly assigned in a class or type.
 
@@ -222,7 +223,7 @@ unless $::memorysize > 1024 {
 }
 </pre>
 
-> In this example we're testing to see if the machine the agent is running on has more than 1024 MB of ram - a `fact` that calculates the memory size into a human usable number.  If the machine has less than 1GB, it'll set an arbritrary variable to 500.
+> In this example we're testing to see if the machine the agent is running on has more than 1024 MB of ram - a `fact` that calculates the memory size into a human usable number.  If the machine has less than 1GB, it'll set an arbitrary variable to 500.
 
 #### `case` statement
 
@@ -233,7 +234,7 @@ case $::operatingsystem {
   'Solaris':           { notice("We are running solaris") }
   'RedHat', 'CentOS':  { notice("We are running redhat, or centos") }
   /^(Debian|Ubuntu)$/: { notice("Through the power of regex, we are running ${::operatingsystem}") }
-  default:             { exit("Unknown ${::operatingsystem") }
+  default:             { fail("Unknown ${::operatingsystem") }
 }
 </pre>
 
@@ -277,7 +278,7 @@ user { 'vjanelle':
 
 Inlining the selectors in your resource is possible, but can rapidly produce unreadable code.  Many auto-formatting tools also can't handle this.
 
-It can also lead to duplication of code, especially when you're creating many similiar resources.  
+It can also lead to duplication of code, especially when you're creating many similar resources.  
 
 #### Regular expressions
 
@@ -305,7 +306,7 @@ A common function that you'll you'll commonly is `template()`.  This function ta
 
 <pre>
 $content = template('polyglot/test.erb') # contains <%= "hello world" %>
-notice($content$)
+notice($content)
 
 Notice: Scope(Class[main]): hello world
 Notice: Finished catalog run in 0.27 seconds
